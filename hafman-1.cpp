@@ -13,15 +13,15 @@ void show_Huffman_map(map<char, string> Huffman_map) {
     }
 }
 
-map<char, string> get_Huffman_map(string str) {//получает введенную пользователем строку
-    //высчитываем частоту встречаемости символа
-    map<char, int> freq;//символ, количество повторений в строке
+map<char, string> get_Huffman_map(string str) {//РїРѕР»СѓС‡Р°РµС‚ РІРІРµРґРµРЅРЅСѓСЋ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј СЃС‚СЂРѕРєСѓ
+    //РІС‹СЃС‡РёС‚С‹РІР°РµРј С‡Р°СЃС‚РѕС‚Сѓ РІСЃС‚СЂРµС‡Р°РµРјРѕСЃС‚Рё СЃРёРјРІРѕР»Р°
+    map<char, int> freq;//СЃРёРјРІРѕР», РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕРІС‚РѕСЂРµРЅРёР№ РІ СЃС‚СЂРѕРєРµ
     for (auto& c : str) {
         freq[c] += 1;
     }
-    //организуем массив, для создания графа
+    //РѕСЂРіР°РЅРёР·СѓРµРј РјР°СЃСЃРёРІ, РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РіСЂР°С„Р°
     priority_queue<pair<int, string>> q;
-    //погружаем в него элементы слова
+    //РїРѕРіСЂСѓР¶Р°РµРј РІ РЅРµРіРѕ СЌР»РµРјРµРЅС‚С‹ СЃР»РѕРІР°
     for (auto it = freq.begin(); it != freq.end(); it++) {
         //cout<<it->first<<": "<<it->second<<endl;
         string s;
@@ -61,7 +61,7 @@ string get_code(map<char, string>Huffman_map, string str) {
 }
 
 int main(void) {
-    string str;//строка символов
+    string str;//СЃС‚СЂРѕРєР° СЃРёРјРІРѕР»РѕРІ
     cin >> str;
 
     map<char, string> Huffman_map = get_Huffman_map(str);
