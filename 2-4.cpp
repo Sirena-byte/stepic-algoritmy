@@ -1,72 +1,46 @@
+#include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <vector>
-#include <string>
 
 using namespace std;
-vector<int> arr;
-int index;
 
-void insert(int x) {
-	arr.push_back(x);//добавляем элемент в вектор
-	index = arr.size() - 1;
-	if (index != 0) {
-		while (arr[index] > arr[(index - 1) / 2]) {//если текущий больше своего родителя 
-			swap(arr[index], arr[(index - 1) / 2]);//меняем местами
-			index = (index - 1) / 2;//индекс сдвигаем
-			if (index == 0) break;
-		}
-	}
+int get_pos(const vector<int>& numbers, int number) {//принимает вектор по ссылке и искомое число
+    size_t l = 0;//начало
+    size_t r = numbers.size() - 1;//конец
+    while (l <= r) {//пока вектор не пуст
+        size_t m = (l + r) / 2;//m= середина
+        if (numbers[m] == number) {//если число совпало
+            return m + 1;//возвращаем индекс+1(так как индексация начинается с нуля)
+        }
+        else if (numbers[m] < number) {//если искомое число больше срединного
+            l = m + 1;//сдвигаем начало на единице больше середины
+        }
+        else {
+            if (m == 0) {//если не нашли выходим
+                break;
+            }
+            r = m - 1;//если искомое число меньше указателя на середину, то конец на единицу левее, чем середина
+        }
+    }
+    return -1;//если не нашли возвращаем -1
 }
-
-//извлекает из очереди элемент с максимальным приоритетом
-void extractMax() {
-	cout << arr[0] << endl;//выводим элемент с нулевым индексом, то есть родителя
-	swap(arr[0], arr[arr.size() - 1]);//меняем текущий с последним
-	arr.pop_back();//удаляем последний элемент вектора
-	index = 0;
-	int size = arr.size() - 1;//размер уменьшаем на 1
-	while (true) {
-		if (index * 2 + 1 > size)break;//проверка на наличие детей
-		else if (index * 2 + 2 > size && index * 2 + 1 <= size) {//проверка на 1 ребенка
-			if (arr[index * 2 + 1] > arr[index]) {//если ребенок больше родителя
-				swap(arr[index * 2 + 1], arr[index]);//меняем местами
-			}
-			break;
-		}
-		else {//2 детей
-			if (arr[index * 2 + 1] >= arr[index * 2 + 2]) {//если первый ребенок больше второго
-				if (arr[index * 2 + 1] > arr[index]) {//и первый больше родителя
-					swap(arr[index * 2 + 1], arr[index]);//меняем местами
-					index = index * 2 + 1;
-				}
-				else break;
-			}
-			else if (arr[index * 2 + 2] >= arr[index * 2 + 1]) {//если второй больше первого
-				if (arr[index * 2 + 2] > arr[index]) {//и больше родителя
-					swap(arr[index * 2 + 2], arr[index]);//меняем местами
-					index = index * 2 + 2;
-				}
-				else break;
-			}
-		}
-	}
-}
-
-
 
 int main() {
-	string str;
-	int n, input;
-	cin >> n;
-	for (int i = 0; i < n; i++) {
-		cin >> str;
-		if (str == "Insert") {
-			cin >> input;
-			insert(input);
-		}
-		else {
-			if (arr.size() > 0) extractMax();
-		}
-	}
-	return 0;
+    size_t number_count;
+    cin >> number_count;//размер массива
+    vector<int> numbers(number_count);//массив
+    for (auto& number : numbers) {
+        cin >> number;//заполняем
+    }
+    assert(is_sorted(numbers.begin(), numbers.end()));// assert проверяет на истину (в данном случае проверяет отсортирован ли массив)
+
+    size_t query_count;
+    cin >> query_count;
+    while (query_count-- > 0) {
+        int number;
+        cin >> number;
+        cout << get_pos(numbers, number) << " ";//мечатаем индекс
+    }
+    cout << endl;
 }
